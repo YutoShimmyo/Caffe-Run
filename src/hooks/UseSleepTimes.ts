@@ -1,46 +1,46 @@
-// src/hooks/useSleepTimes.ts
-"use client";
-import { useEffect, useState } from "react";
+// hooks/useSleepTimes.ts
+import { useState, useEffect } from "react";
 
-const STORAGE_KEYS = {
-  BED_TIME: "bedTime",
-  WAKE_TIME: "wakeTime",
-};
+export const useSleepTimes = () => {
+  const [bedTime, setBedTime] = useState<string>("23:00");
+  const [wakeTime, setWakeTime] = useState<string>("07:00");
 
-export function useSleepTimes() {
-  const [bedTime, setBedTime] = useState("");
-  const [wakeTime, setWakeTime] = useState("");
-  const [initialized, setInitialized] = useState(false);
+  const loadFromStorage = () => {
+    const savedBed = localStorage.getItem("bedTime");
+    const savedWake = localStorage.getItem("wakeTime");
+    if (savedBed) setBedTime(savedBed);
+    if (savedWake) setWakeTime(savedWake);
+  };
 
-  // 初期読み込み（localStorageから値を復元）
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const savedBedTime = localStorage.getItem(STORAGE_KEYS.BED_TIME);
-        const savedWakeTime = localStorage.getItem(STORAGE_KEYS.WAKE_TIME);
+    loadFromStorage();
 
-        if (savedBedTime) setBedTime(savedBedTime);
-        if (savedWakeTime) setWakeTime(savedWakeTime);
-      } catch (e) {
-        console.error("Failed to load sleep times:", e);
-      }
-      setInitialized(true);
-    }
+    // カスタムイベントを監視してlocalStorageの変更を検知
+    const handleStorageChange = () => {
+      loadFromStorage();
+    };
+
+    window.addEventListener("sleepTimesUpdated", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("sleepTimesUpdated", handleStorageChange);
+    };
   }, []);
 
-  // 保存処理（bedTime）
-  useEffect(() => {
-    if (initialized && typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.BED_TIME, bedTime);
-    }
-  }, [bedTime, initialized]);
+  // 保存時にlocalStorageにも書き込む（任意）
+  const updateBedTime = (time: string) => {
+    setBedTime(time);
+    localStorage.setItem("bedTime", time);
+  };
+  const updateWakeTime = (time: string) => {
+    setWakeTime(time);
+    localStorage.setItem("wakeTime", time);
+  };
 
-  // 保存処理（wakeTime）
-  useEffect(() => {
-    if (initialized && typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.WAKE_TIME, wakeTime);
-    }
-  }, [wakeTime, initialized]);
-
-  return { bedTime, wakeTime, setBedTime, setWakeTime };
-}
+  return {
+    bedTime,
+    wakeTime,
+    setBedTime: updateBedTime,
+    setWakeTime: updateWakeTime,
+  };
+};

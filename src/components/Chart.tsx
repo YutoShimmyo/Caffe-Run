@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React from "react"; // useMemoは不要になったので削除
 import {
   LineChart,
   Line,
@@ -8,13 +8,13 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  Legend, // Legendを追加
+  Legend,
 } from "recharts";
 
 // グラフの点の型定義（APIの返り値に合わせる）
 type DataPoint = {
   time: string;
-  value: number; // ★キーの名前が'value'であることを定義
+  value: number;
 };
 
 type Props = {
@@ -22,7 +22,8 @@ type Props = {
 };
 
 const Chart: React.FC<Props> = ({ data }) => {
-  // データがない場合はメッセージを表示
+  // ★★★ useMemoとhourlyDataの行を削除しました ★★★
+
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-gray-400">
@@ -43,13 +44,21 @@ const Chart: React.FC<Props> = ({ data }) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" tick={{ fontSize: 12 }} minTickGap={8} />
-          <YAxis domain={[0, 120]} tick={{ fontSize: 12 }} width={28} />
-          <Tooltip />
+          <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} width={28} />
+          <Tooltip
+            contentStyle={{
+              color: "#000",
+              backgroundColor: "#fff",
+              borderRadius: "0.75rem",
+              border: "1px solid #eee",
+            }}
+            labelStyle={{ color: "#000" }} // ここでラベル（時刻）の文字色だけ黒に
+          />
           <Legend />
           <Line
             type="monotone"
-            dataKey="value" // ★★★ ここを "focus" から "value" に変更 ★★★
-            name="覚醒度"
+            dataKey="value"
+            name="集中度"
             stroke="#6366f1"
             strokeWidth={3}
             dot={{ r: 2 }}

@@ -5,7 +5,6 @@
 ```bash
 brew install node
 ```
-
 ---
 
 ## 開発を始める前に

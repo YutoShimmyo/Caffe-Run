@@ -1,5 +1,3 @@
-// hooks/useFocusPeriods.ts
-"use client";
 import { useState, useEffect } from "react";
 
 export interface FocusPeriod {
@@ -7,53 +5,82 @@ export interface FocusPeriod {
   end: string;
 }
 
-const STORAGE_KEY = "focusPeriods";
+/**
+ * フォーカス時間帯を管理するカスタムフック
+ */
+export function useFocusPeriods(
+  initial?: FocusPeriod[],
+  skipStorage?: boolean,
+) {
+  const [focusPeriods, setPeriods] = useState<FocusPeriod[]>(
+    initial ?? [{ start: "09:00", end: "12:00" }],
+  );
 
-export function useFocusPeriods() {
-  const [focusPeriods, setFocusPeriods] = useState<FocusPeriod[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // localStorage から読み込み
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          console.log("読み込み成功:", parsed);
-          setFocusPeriods(parsed);
-        } catch (e) {
-          console.error("パース失敗:", e);
+  const loadFromStorage = () => {
+    const savedPeriods = localStorage.getItem("focusPeriods");
+    if (savedPeriods) {
+      try {
+        const parsedPeriods = JSON.parse(savedPeriods);
+        if (Array.isArray(parsedPeriods) && parsedPeriods.length > 0) {
+          setPeriods(parsedPeriods);
         }
-      } else {
-        setFocusPeriods([{ start: "", end: "" }]); // 初期値セット
+      } catch (error) {
+        console.warn("Failed to load focus periods from localStorage:", error);
       }
-      setIsInitialized(true);
     }
-  }, []);
+  };
 
-  // localStorage に保存
   useEffect(() => {
-    if (isInitialized && typeof window !== "undefined") {
-      console.log("保存:", focusPeriods);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(focusPeriods));
+    if (!skipStorage) {
+      loadFromStorage();
     }
-  }, [focusPeriods, isInitialized]);
 
-  const addFocusPeriod = () =>
-    setFocusPeriods((prev) => [...prev, { start: "", end: "" }]);
+    // カスタムイベントを監視してlocalStorageの変更を検知
+    const handleStorageChange = () => {
+      if (!skipStorage) {
+        loadFromStorage();
+      }
+    };
 
-  const removeFocusPeriod = (idx: number) =>
-    setFocusPeriods((prev) => prev.filter((_, i) => i !== idx));
+    window.addEventListener("focusPeriodsUpdated", handleStorageChange);
 
+    return () => {
+      window.removeEventListener("focusPeriodsUpdated", handleStorageChange);
+    };
+  }, [skipStorage]);
+
+  /** 新しいフォーカス時間帯を追加 */
+  const addFocusPeriod = () => {
+    setPeriods((prev) => {
+      const newPeriods = [...prev, { start: "", end: "" }];
+      localStorage.setItem("focusPeriods", JSON.stringify(newPeriods));
+      return newPeriods;
+    });
+  };
+
+  /** インデックス指定で時間帯を削除 */
+  const removeFocusPeriod = (index: number) => {
+    setPeriods((prev) => {
+      const newPeriods = prev.filter((_, i) => i !== index);
+      localStorage.setItem("focusPeriods", JSON.stringify(newPeriods));
+      return newPeriods;
+    });
+  };
+
+  /** インデックスとキーを指定して時間帯を更新 */
   const updateFocusPeriod = (
     idx: number,
     key: "start" | "end",
     value: string,
-  ) =>
-    setFocusPeriods((prev) =>
-      prev.map((p, i) => (i === idx ? { ...p, [key]: value } : p)),
-    );
+  ) => {
+    setPeriods((prev) => {
+      const newPeriods = prev.map((p, i) =>
+        i === idx ? { ...p, [key]: value } : p,
+      );
+      localStorage.setItem("focusPeriods", JSON.stringify(newPeriods));
+      return newPeriods;
+    });
+  };
 
   return {
     focusPeriods,

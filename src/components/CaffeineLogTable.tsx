@@ -40,18 +40,14 @@ const CaffeineLogTable: React.FC<Props> = ({ logs, onDeleteLog }) => {
           <div className="text-gray-400 text-sm">まだ記録がありません。</div>
         ) : (
           // 履歴テーブル本体
-          <table className="w-full text-sm">
+          <table className="w-full text-center">
             <thead>
-              <tr className="border-b">
-                <th className="text-left p-2 text-gray-500">時間</th>
-                <th className="text-left p-2 text-gray-500">飲料名</th>
-                <th className="text-left p-2 text-gray-500">杯数/量</th>
-                <th className="text-left p-2 text-gray-500">総摂取ml</th>
-                <th className="text-left p-2 text-gray-500">
-                  カフェイン量(mg)
-                </th>
-                {/* ADDED: 削除ボタン用の見出しを追加 */}
-                <th className="text-left p-2 text-gray-500">操作</th>
+              <tr className="border-b text-xs p-2 text-gray-500">
+                <th>時間</th>
+                <th>飲料名</th>
+                <th>量</th>
+                <th>カフェイン</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -61,27 +57,25 @@ const CaffeineLogTable: React.FC<Props> = ({ logs, onDeleteLog }) => {
                   key={idx}
                   className="border-b last:border-none text-gray-900"
                 >
-                  <td className="p-2">{log.time}</td>
-                  <td className="p-2">{log.drink}</td>
-                  <td className="p-2">
+                  <td className="p-2 text-xs">{log.time}</td>
+                  <td className="p-2 text-xs">{log.drink}</td>
+                  <td className="p-2 text-xs">
                     {/* プリセット時は杯数、カスタム時はmlで表示 */}
                     {log.mode === "preset"
                       ? log.cups !== undefined
                         ? `${log.cups}杯`
                         : "-"
-                      : `${log.ml}ml（手入力）`}
+                      : `${log.ml}ml`}
                   </td>
-                  <td className="py-2">{log.caffeineMg}</td>
-                  <td className="p-2">{log.ml}</td>
-                  <td className="p-2">{log.caffeineMg}</td>
+                  <td className="py-2 text-xs">{log.caffeineMg}mg</td>
                   {/* ADDED: 削除ボタンを追加 */}
-                  <td className="p-2">
+                  <td className="p-2 text-sm">
                     <button
                       type="button"
                       onClick={() => onDeleteLog(idx)}
                       className="text-red-500 hover:text-red-700 text-xs font-semibold"
                     >
-                      削除
+                      ×
                     </button>
                   </td>
                 </tr>

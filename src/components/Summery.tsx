@@ -32,7 +32,13 @@ const Summery: React.FC<SummeryProps> = ({ caffeineData }) => {
   }
 
   return (
-    <div className="w-full max-w-sm mx-auto p-0">
+    <div className="w-full max-w-sm mx-auto p-0 flex flex-col items-center">
+      {/*タイトル */}
+      <div className="text-xs sm:text-sm md:text-base lg:text-lg font-medium text-gray-700 mb-2 text-center">
+        カフェイン総量
+      </div>
+
+      {/* グラフ */}
       <div className="w-full h-24 md:h-32 lg:h-40">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart
