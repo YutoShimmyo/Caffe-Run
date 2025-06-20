@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -22,6 +22,12 @@ type Props = {
 };
 
 const Chart: React.FC<Props> = ({ data }) => {
+  // データを1時間ごとにフィルタリング
+  const hourlyData = useMemo(
+    () => data.filter((d) => d.time.endsWith(":00") || d.time.endsWith(":30")),
+    [data],
+  );
+
   // データがない場合はメッセージを表示
   if (!data || data.length === 0) {
     return (
@@ -38,18 +44,26 @@ const Chart: React.FC<Props> = ({ data }) => {
       </h2>
       <ResponsiveContainer width="100%" height="80%">
         <LineChart
-          data={data}
+          data={hourlyData}
           margin={{ top: 8, right: 8, left: 4, bottom: 8 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" tick={{ fontSize: 12 }} minTickGap={8} />
-          <YAxis domain={[0, 120]} tick={{ fontSize: 12 }} width={28} />
-          <Tooltip />
+          <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} width={28} />
+          <Tooltip
+            contentStyle={{
+              color: "#000",
+              backgroundColor: "#fff",
+              borderRadius: "0.75rem",
+              border: "1px solid #eee",
+            }}
+            labelStyle={{ color: "#000" }} // ここでラベル（時刻）の文字色だけ黒に
+          />
           <Legend />
           <Line
             type="monotone"
             dataKey="value" // ★★★ ここを "focus" から "value" に変更 ★★★
-            name="覚醒度"
+            name="集中度"
             stroke="#6366f1"
             strokeWidth={3}
             dot={{ r: 2 }}

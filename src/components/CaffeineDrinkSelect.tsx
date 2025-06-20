@@ -45,6 +45,7 @@ const CaffeineDrinkSelect: React.FC<Props> = ({
       {/* 飲料名セレクトボックス */}
       <div>
         <label className="block text-sm text-gray-600 mb-1">飲料名</label>
+        <div className="flex items-center gap-2"></div>
         <select
           className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-400"
           value={drink}
@@ -53,11 +54,17 @@ const CaffeineDrinkSelect: React.FC<Props> = ({
           <option value="" disabled className="text-gray-400">
             選択してください
           </option>
-          {drinkOptions.map((opt) => (
-            <option key={opt.name} value={opt.name}>
-              {opt.name}
-            </option>
-          ))}
+          {drinkOptions.map((opt) => {
+            // 1杯あたりのカフェイン量
+            const caffeinePerCup = Math.round(
+              (opt.caffeineMgPer100ml * opt.defaultMlPerCup) / 100,
+            );
+            return (
+              <option key={opt.name} value={opt.name}>
+                {opt.name}({opt.defaultMlPerCup}ml, {caffeinePerCup}mg)
+              </option>
+            );
+          })}
         </select>
       </div>
 
@@ -106,7 +113,7 @@ const CaffeineDrinkSelect: React.FC<Props> = ({
               {/* カフェイン含有量表示 */}
               {cups && cups !== "" && (
                 <span className="text-sm text-gray-500">
-                  （カフェイン: {caffeineMg}mg）
+                  （{caffeineMg}mg）
                 </span>
               )}
             </span>

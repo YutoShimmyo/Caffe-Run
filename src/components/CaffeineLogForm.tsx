@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { DRINK_OPTIONS, DrinkOption } from "../lib/caffeine-drink-options";
+"use client";
+import React, { useState } from "react";
+import { DRINK_OPTIONS, DrinkOption } from "../lib/CaffeineDrinkOptions";
 import CaffeineDrinkSelect from "./CaffeineDrinkSelect";
 import CaffeineLogTable, { CaffeineLogEntry } from "./CaffeineLogTable";
-
-/**
- * 飲料名と摂取量を入力するコンポーネント
- *  飲料によって杯数の選択肢やカフェインの含有量が異なるため，これらをセットで管理する
- */
-
-const CAFFEINE_LOGS_STORAGE_KEY = "caffeine-logs";
 
 // ドリンク摂取量(ml)からカフェイン摂取量(mg)へ計算する関数
 function calcCaffeineMg(drink: DrinkOption, ml: number): number {
@@ -23,60 +17,30 @@ function getNowTimeString(): string {
   return `${hh}:${mm}`;
 }
 
+interface Props {
+  logs: CaffeineLogEntry[] | null;
+  setLogs: React.Dispatch<React.SetStateAction<CaffeineLogEntry[] | null>>;
+}
+
 // カフェイン摂取記録フォームのコンポーネント
-const CaffeineLogForm: React.FC = () => {
-  // フォームの入力状態（時間、飲料名、入力モード、杯数、ml）
-  const [time, setTime] = useState(getNowTimeString()); // 現在時刻を初期値に設定
+const CaffeineLogForm: React.FC<Props> = ({ logs, setLogs }) => {
+  const [time, setTime] = useState(getNowTimeString());
   const [drinkName, setDrinkName] = useState(DRINK_OPTIONS[0].name);
   const [mode, setMode] = useState<"preset" | "custom">("preset");
   const [cups, setCups] = useState(DRINK_OPTIONS[0].cupPresets[0]);
   const [ml, setMl] = useState(DRINK_OPTIONS[0].defaultMlPerCup);
 
-  // 摂取履歴
-  const [logs, setLogs] = useState<CaffeineLogEntry[] | null>(null);
+  // const [logs, setLogs] = useCaffeineLogs(); // カスタムフックから状態取得
 
-  // 未入力項目ありメッセージ/登録完了メッセージ
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const savedLogs = window.localStorage.getItem(
-          CAFFEINE_LOGS_STORAGE_KEY,
-        );
-        // 読み込んだデータがあればそれを、なければ空配列をセット
-        setLogs(savedLogs ? JSON.parse(savedLogs) : []);
-      } catch (e) {
-        console.error("Failed to load logs from local storage", e);
-        setLogs([]); // エラー時も空配列をセット
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    // CHANGED 2: logsがnull（初期状態）でない時だけ保存処理を実行
-    if (typeof window !== "undefined" && logs !== null) {
-      try {
-        window.localStorage.setItem(
-          CAFFEINE_LOGS_STORAGE_KEY,
-          JSON.stringify(logs),
-        );
-      } catch (e) {
-        console.error("Failed to save logs to local storage", e);
-      }
-    }
-  }, [logs]);
-
-  // 現在選択中の飲料データを取得
   const selectedDrink = DRINK_OPTIONS.find((d) => d.name === drinkName)!;
-  // 入力値から総摂取mlを計算（何杯or何mlのどちらで入力したかによって計算式が違う）
   const totalMl =
     mode === "preset"
       ? Number(cups) * selectedDrink.defaultMlPerCup
       : Number(ml);
 
-  // 飲料変更時に値をリセット
   const handleDrinkChange = (next: string) => {
     setDrinkName(next);
     const found = DRINK_OPTIONS.find((d) => d.name === next)!;
@@ -85,7 +49,6 @@ const CaffeineLogForm: React.FC = () => {
     setMode("preset");
   };
 
-  // 「追加」ボタン押下時に時間が未入力ならエラーメッセージ出力
   const handleAddLog = () => {
     if (!time) {
       setError("摂取時間を入力してください");
@@ -94,7 +57,6 @@ const CaffeineLogForm: React.FC = () => {
     }
     setError("");
     const caffeineMg = calcCaffeineMg(selectedDrink, totalMl);
-    // logsがnullの場合も考慮して、空配列から始める
     setLogs((prev) => [
       ...(prev || []),
       {
@@ -106,15 +68,13 @@ const CaffeineLogForm: React.FC = () => {
         caffeineMg,
       },
     ]);
-    setTime("");
+    setTime(getNowTimeString());
     setSuccess("カフェイン摂取履歴を登録しました");
     setTimeout(() => setSuccess(""), 2000);
   };
 
-  const handleDeleteLog = (indexToDelete: number) => {
-    setLogs((prev) =>
-      prev ? prev.filter((_, index) => index !== indexToDelete) : [],
-    );
+  const handleDeleteLog = (idx: number) => {
+    setLogs((prev) => (prev ? prev.filter((_, i) => i !== idx) : []));
   };
 
   return (
@@ -153,7 +113,6 @@ const CaffeineLogForm: React.FC = () => {
       {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
       {success && <div className="text-green-600 text-sm mb-2">{success}</div>}
 
-      {/* CHANGED 3: logsがnullの場合は空配列を渡すように修正 */}
       <CaffeineLogTable logs={logs || []} onDeleteLog={handleDeleteLog} />
     </div>
   );
