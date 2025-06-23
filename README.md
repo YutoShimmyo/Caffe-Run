@@ -31,10 +31,7 @@
 ## 📹 デモ動画
 
 <p align="center">
-  <video width="700" autoplay loop muted controls>
-    <source src="demo/demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <img src="demo/demo.gif" width="700" alt="アプリデモ"/>
 </p>
 
 
@@ -42,7 +39,7 @@
 
 <table>
 <tr>
-<td><img src="demo/setting.png" width="400"/></td>
+<td><img src="demo/setting.png" width="800"/></td>
 <td>
 
 初回起動時に睡眠時間と集中時間帯を設定。  
@@ -56,7 +53,7 @@
 
 <table>
 <tr>
-<td><img src="demo/main_screen.png" width="400"/></td>
+<td><img src="demo/main_screen.png" width="800"/></td>
 <td>
   <font size="10">
     現在時刻・摂取履歴・推奨スケジュールを一覧できる操作画面。<br />
@@ -71,7 +68,7 @@
 
 <table>
 <tr>
-<td><img src="demo/dashboard.png" width="400"/></td>
+<td><img src="demo/dashboard.png" width="800"/></td>
 <td>
 
 1日の摂取記録や集中力の変化を振り返る分析画面。  
