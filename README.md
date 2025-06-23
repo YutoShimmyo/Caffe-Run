@@ -10,14 +10,6 @@
   睡眠・集中時間に基づいたAIによる摂取スケジュール提案＆可視化ツール
 </p>
 
----
-
-## 🏆 受賞実績
-
-🎖 技育CAMP ハッカソン Vol.5 にて「努力賞」を受賞しました！
-[📸 ハッカソン投稿をXで見る](https://x.com/geek_pjt/status/1936716140849590644)
-
-<img width="400" src="https://github.com/user-attachments/assets/2fe28879-0509-4f8e-a880-71c44e160c74" alt="受賞画像" />
 
 ---
 
@@ -37,14 +29,58 @@
 
 ---
 
-## 📹 デモ動画 / スクリーンショット
+## 📹 デモ動画
 
-| 項目                   | 内容                           |
-| -------------------- | ---------------------------- |
-| 🎥 デモ動画              | `/demo/demo.mp4` に追加予定       |
-| ⚙️ 初期設定画面            | `/screens/initial-setup.png` |
-| 🖥️ メイン画面            | `/screens/main-ui.png`       |
-| 📊 ダッシュボード & AIアドバイス | `/screens/dashboard-ai.png`  |
+<p align="center">
+  <video width="700" autoplay loop muted controls>
+    <source src="demo/demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</p>
+
+
+### ⚙️ 初期設定画面
+
+<table>
+<tr>
+<td><img src="demo/setting.png" width="400"/></td>
+<td>
+
+初回起動時に睡眠時間と集中時間帯を設定。  
+これにより、あなたの生活リズムに最適化された摂取プランが自動生成されます。
+
+</td>
+</tr>
+</table>
+
+### 🖥️ メイン画面
+
+<table>
+<tr>
+<td><img src="demo/main_screen.png" width="400"/></td>
+<td>
+
+現在時刻・摂取履歴・推奨スケジュールを一覧できる操作画面。  
+Unityキャラクターや集中力グラフもここに表示されます。
+
+</td>
+</tr>
+</table>
+
+### 📊 ダッシュボード & AIアドバイス
+
+<table>
+<tr>
+<td><img src="demo/dashboard.png" width="400"/></td>
+<td>
+
+1日の摂取記録や集中力の変化を振り返る分析画面。  
+GPT-4o-miniによるアドバイスで、より良いパフォーマンス習慣をサポート。
+
+</td>
+</tr>
+</table>
+
 
 ---
 
@@ -79,6 +115,17 @@
 3. 推奨されるカフェイン摂取スケジュールを確認
 4. 実際の摂取を記録し、集中力の変化を3Dキャラとグラフで観察
 5. AIアドバイスを活用して日々の改善へ
+
+---
+
+## 🏆 受賞実績
+
+🎖 技育CAMP ハッカソン Vol.5 にて「努力賞」を受賞しました！
+[📸 ハッカソン投稿をXで見る](https://x.com/geek_pjt/status/1936716140849590644)
+<p align='center'>
+<img width="200" src="https://github.com/user-attachments/assets/2fe28879-0509-4f8e-a880-71c44e160c74" alt="受賞画像" />
+</p>
+
 
 ---
 
