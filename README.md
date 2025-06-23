@@ -1,39 +1,85 @@
-# Caffe-Run
+<h1 align="center">☕ Caffe-Run</h1>
+<p align="center">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/YutoShimmyo/Caffe-Run?style=social" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
+  <img alt="Vercel Deploy" src="https://img.shields.io/badge/Live-Demo-brightgreen?logo=vercel" />
+</p>
 
-![logo](https://github.com/user-attachments/assets/aeac4111-073b-433c-8ba0-51f8506ddab1)
+<p align="center">
+  集中力の最大化をサポートする <b>カフェイン最適化アプリ</b><br />
+  睡眠・集中時間に基づいたAIによる摂取スケジュール提案＆可視化ツール
+</p>
 
-カフェインの効果を最適化し、集中力を最大化するためのWebアプリケーションです。科学的根拠に基づいてカフェイン摂取タイミングを計算し、個人の生活リズムに合わせた最適な計画を提案します。  
-deploy先 -> https://caffe-run-flax.vercel.app/
+---
 
+## 🏆 受賞実績
 
-技育CAMPハッカソン Vol.5 に出場し、努力賞を受賞しました！
-<img width="358" alt="image" src="https://github.com/user-attachments/assets/2fe28879-0509-4f8e-a880-71c44e160c74" />
-https://x.com/geek_pjt/status/1936716140849590644
+🎖 技育CAMP ハッカソン Vol.5 にて「努力賞」を受賞しました！
+[📸 ハッカソン投稿をXで見る](https://x.com/geek_pjt/status/1936716140849590644)
 
+<img width="400" src="https://github.com/user-attachments/assets/2fe28879-0509-4f8e-a880-71c44e160c74" alt="受賞画像" />
 
-## 主な機能
+---
 
-- **カフェイン効果の予測**: 科学的モデルに基づいてカフェインの血中濃度と集中力への影響を可視化
-- **個別最適化**: 睡眠時間、集中時間、既存のカフェイン摂取履歴を考慮した個人向けプラン生成
-- **3Dキャラクター表示**: Unity WebGLを使用したリアルタイム集中力可視化
-- **履歴管理**: カフェイン摂取記録の自動保存と分析
+## 🚀 デプロイ先
 
-## 技術スタック
+🔗 [https://caffe-run-flax.vercel.app/](https://caffe-run-flax.vercel.app/)
 
-- **フロントエンド**: Next.js 15, React 19, TypeScript
-- **スタイリング**: Tailwind CSS 4
-- **3D表示**: Unity WebGL, react-unity-webgl
-- **データ可視化**: Recharts
-- **UI コンポーネント**: Headless UI
-- **開発ツール**: ESLint, Prettier
+---
 
+## ✨ 主な特徴
 
-## カフェイン最適化アルゴリズム
+* ⏰ 睡眠・集中時間を元に、最適なカフェイン摂取スケジュールを自動生成
+* 📈 カフェイン効果と集中力の推移をインタラクティブなグラフで可視化
+* 🧍 Unity 3Dキャラクターがリアルタイムに集中力を表現
+* 🧠 GPT-4o-mini によるAIアドバイス機能付き
+* 💾 localStorageでのデータ永続化（オフラインでも利用可）
 
-本アプリケーションは以下の科学的モデルに基づいています：
+---
 
-1. **薬物動態学モデル**: カフェインの吸収・代謝・排出をシミュレーション
-2. **概日リズム**: 体内時計に基づく覚醒度の変動を考慮
-3. **個人差**: 体重、代謝率、カフェイン耐性を反映
-4. **最適化アルゴリズム**: 目標集中力を維持しつつ副作用を最小化
+## 📹 デモ動画 / スクリーンショット
 
+| 項目                   | 内容                           |
+| -------------------- | ---------------------------- |
+| 🎥 デモ動画              | `/demo/demo.mp4` に追加予定       |
+| ⚙️ 初期設定画面            | `/screens/initial-setup.png` |
+| 🖥️ メイン画面            | `/screens/main-ui.png`       |
+| 📊 ダッシュボード & AIアドバイス | `/screens/dashboard-ai.png`  |
+
+---
+
+## 🧠 使用技術スタック
+
+| 区分      | 技術                                 |
+| ------- | ---------------------------------- |
+| フロントエンド | Next.js 15 / React 19 / TypeScript |
+| UI      | Tailwind CSS / Headless UI         |
+| データ可視化  | Recharts                           |
+| 3D描画    | Unity WebGL + react-unity-webgl    |
+| AIアドバイス | OpenAI GPT-4o-mini API             |
+| ストレージ   | localStorage（クライアントサイド）            |
+
+---
+
+## 🧪 背景モデル
+
+本アプリは以下のモデルに基づいて動作しています：
+
+* 📚 **薬物動態学モデル**：カフェインの吸収・代謝・排出のシミュレーション
+* 🕰️ **概日リズムモデル**：体内時計に基づく自然な集中変化を反映
+* 📊 **集中力予測モデル**：ユーザーの生活リズムと摂取履歴に応じた予測
+* ⚙️ **最適化アルゴリズム**：目標パフォーマンスを維持しつつ副作用を最小化
+
+---
+
+## 🖱️ 使い方（How to Use）
+
+1. アプリを開く：[https://caffe-run-flax.vercel.app/](https://caffe-run-flax.vercel.app/)
+2. 初期設定（睡眠時間・集中時間）を入力
+3. 推奨されるカフェイン摂取スケジュールを確認
+4. 実際の摂取を記録し、集中力の変化を3Dキャラとグラフで観察
+5. AIアドバイスを活用して日々の改善へ
+
+---
+
+💬 もしこのプロジェクトが役に立ったら、ぜひ Star ⭐️ をお願いします！
